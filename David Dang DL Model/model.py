@@ -5,16 +5,15 @@ from tensorflow.keras import layers, models
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.model_selection import train_test_split
 
-# Ensure reproducibility
 np.random.seed(42)
 tf.random.set_seed(42)
 
 # Dataset paths
 DATASET_DIR = "C:\CECS456FinalProject"
 CATEGORIES = ['AbdomenCT', 'BreastMRI', 'CXR', 'ChestCT', 'Hand', 'HeadCT']
-IMG_SIZE = 64  # Resize all images to 64x64
+IMG_SIZE = 64 
 
-# Step 1: Load and Preprocess the Data
+# Load the Dataset
 def load_data(dataset_dir, categories):
     data = []
     labels = []
@@ -34,15 +33,14 @@ def load_data(dataset_dir, categories):
 
     return np.array(data), np.array(labels)
 
-# Load the dataset
 data, labels = load_data(DATASET_DIR, CATEGORIES)
 
-# Split into training and testing sets
+# Split the data
 train_data, test_data, train_labels, test_labels = train_test_split(
     data, labels, test_size=0.2, random_state=42, stratify=labels
 )
 
-# Step 2: Create Bags for MIP
+# Created "Bags" for the MIP DL model
 def create_bags(data, labels, bag_size=10):
     bags = []
     bag_labels = []
@@ -60,7 +58,7 @@ def create_bags(data, labels, bag_size=10):
 train_bags, train_bag_labels = create_bags(train_data, train_labels, bag_size=10)
 test_bags, test_bag_labels = create_bags(test_data, test_labels, bag_size=10)
 
-# Step 3: Build the MIP Model
+# Building the Model
 def build_mip_model(input_shape):
     instance_model = models.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
@@ -82,7 +80,7 @@ def build_mip_model(input_shape):
 mip_model = build_mip_model((IMG_SIZE, IMG_SIZE, 3))
 mip_model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-# Step 4: Train the Model
+# Training the model
 history = mip_model.fit(
     train_bags, train_bag_labels,
     validation_data=(test_bags, test_bag_labels),
@@ -90,7 +88,7 @@ history = mip_model.fit(
     batch_size=16
 )
 
-# Step 5: Test with Example Cases
+# Test Cases
 def test_model_with_example_cases(model, test_bags, test_bag_labels):
     predictions = model.predict(test_bags)
     predicted_labels = np.argmax(predictions, axis=1)
