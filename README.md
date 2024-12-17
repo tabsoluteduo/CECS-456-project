@@ -30,14 +30,14 @@ pip install tensorflow numpy opencv-python matplotlib scikit-learn
 In the code, you will need to specify the path to the directory where you downloaded the Medical MNIST dataset. Open the `myModel.py` file and locate the following line:
 
 python
-DATASET_DIR = 'C:\\Users\\Blade\\OneDrive\\Documentos\\Github\\CECS456_dataset\\medical_mnist' # Path to unzipped Medical MNIST folder (change according to path in own device)
+DATASET_DIR = '(Change according to path in own device)' # Path to unzipped Medical MNIST folder
 
 ### Change the File Path
 
 Replace the existing path with the path to your dataset. For example, if you downloaded the dataset to `C:\Datasets\Medical_MNIST`, you would modify the line as follows:
 
 python
-DATASET_DIR = '(Your path to the dataset)' # Update this path to where you downloaded your dataset
+DATASET_DIR = 'C:\Datasets\Medical_MNIST' # Update this path to where you downloaded your dataset
 
 Make sure to use double backslashes (`\\`) in the file path to avoid issues with escape characters in Python strings.
 
